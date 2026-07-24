@@ -1,0 +1,24 @@
+{
+  "name": "sera-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Sera stablecoin market data API",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "sera-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "viem": "^2.55.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.22.3",
+    "typescript": "^5.7.0"
+  }
+}

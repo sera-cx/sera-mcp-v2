@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "sera": {
+      "command": "node",
+      "args": [
+        "/path/to/sera-mcp/dist/index.js"
+      ],
+      "env": {
+        "EXTERNAL_API_URL": "https://api.dev.sera.cx",
+        "WALLET_PRIVATE_KEY": "0xYOUR_PRIVATE_KEY_HERE",
+        "RPC_URL": "https://ethereum-sepolia-rpc.publicnode.com"
+      }
+    }
+  }
+}
