@@ -1,8 +1,18 @@
 # Sera MCP Server
 
-A Model Context Protocol (MCP) server that provides comprehensive access to Sera's stablecoin exchange platform, including market data, wallet operations, trading, and order management.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
-The server talks **directly** to the Sera CLOB API — no webapp backend required. When `WALLET_PRIVATE_KEY` is set, it can also sign and send on-chain transactions (swaps, deposits, withdrawals, token approvals).
+A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server for **Sera** — the stablecoin exchange platform. Enables AI assistants like Claude to query market data, check balances, execute swaps, and manage orders through natural language.
+
+## Features
+
+- **Market Data** — Real-time stablecoin prices, metadata, and historical data
+- **Wallet Management** — Check balances, token holdings, and exchange deposits
+- **Trading** — Get quotes and execute swaps with automatic token approval
+- **Order Management** — Place, view, and cancel limit orders
+- **Deposit & Withdraw** — Move funds between wallet and exchange
+- **Multi-Network** — Supports Ethereum mainnet and Sepolia testnet
 
 ## Quick Start
 
@@ -35,6 +45,18 @@ Config file location:
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
 Restart Claude Desktop after editing the config.
+
+### Mainnet Configuration
+
+```json
+{
+  "env": {
+    "EXTERNAL_API_URL": "https://api.sera.cx",
+    "WALLET_PRIVATE_KEY": "0xYOUR_PRIVATE_KEY",
+    "RPC_URL": "https://eth.llamarpc.com"
+  }
+}
+```
 
 ## Configuration
 
@@ -93,54 +115,18 @@ Restart Claude Desktop after editing the config.
 | `execute_deposit` | **Execute a deposit end-to-end**: builds tx, signs, sends on-chain. Requires `WALLET_PRIVATE_KEY`. |
 | `execute_withdraw` | **Execute a withdrawal end-to-end**: builds tx, signs, sends on-chain. Requires `WALLET_PRIVATE_KEY`. |
 
-## Tool Examples
+## Example Prompts
 
-### Market Data
+Once configured, you can interact with Sera using natural language:
 
-```json
-// Get all stablecoins
-{ "page": 1, "per_page": 10 }
-
-// Search by name
-{ "query": "tether", "limit": 5 }
-
-// Get coin metadata by ticker
-{ "ticker": "USDT" }
-```
-
-### Trading
-
-```json
-// Get a swap quote
-{
-  "market_id": "0x8365421d0e1b316fc6398d21be162992216bf2ad-0x965d4b4546716e416e950bc30467d128455d2d0e",
-  "direction": "ASK",
-  "amount_in": "100"
-}
-
-// Execute a swap (100 USDT to USDC, amounts are human-readable)
-{
-  "from_token": "0x8365421d0e1b316fc6398d21be162992216bf2ad",
-  "to_token": "0x965d4b4546716e416e950bc30467d128455d2d0e",
-  "amount": "100"
-}
-```
-
-### Deposit & Withdraw
-
-```json
-// Execute a deposit (100 USDT to exchange balance)
-{
-  "token_address": "0x8365421d0e1b316fc6398d21be162992216bf2ad",
-  "amount": "100"
-}
-
-// Execute a withdrawal
-{
-  "token_address": "0x8365421d0e1b316fc6398d21be162992216bf2ad",
-  "amount": "50"
-}
-```
+| Prompt | What it does |
+|--------|-------------|
+| "Check my wallet balances" | Calls `get_wallet_info` + `get_wallet_balances` |
+| "Show me all stablecoins on Sera" | Calls `get_market` |
+| "What's the exchange rate between USDT and USDC?" | Calls `get_exchange_rate` |
+| "Swap 100 USDT for USDC" | Calls `execute_swap` with auto-approval |
+| "Deposit 50 USDT to my exchange balance" | Calls `execute_deposit` |
+| "Show my open orders and cancel the first one" | Calls `get_open_orders` + `cancel_order` |
 
 ## Key Behaviors
 
@@ -156,6 +142,11 @@ Restart Claude Desktop after editing the config.
 
 6. **Testnet vs Mainnet**: Use `EXTERNAL_API_URL=https://api.dev.sera.cx` for testnet (Sepolia) or `https://api.sera.cx` for mainnet. The RPC URL must match the chain.
 
+| Network | API URL | Chain ID | Example RPC |
+|---------|---------|----------|-------------|
+| Mainnet | `https://api.sera.cx` | 1 | `https://eth.llamarpc.com` |
+| Sepolia | `https://api.dev.sera.cx` | 11155111 | `https://ethereum-sepolia-rpc.publicnode.com` |
+
 ## Development
 
 ```bash
@@ -168,3 +159,7 @@ npm run dev
 ## License
 
 MIT
+
+---
+
+Built for [Sera](https://sera.cx) 🌐
