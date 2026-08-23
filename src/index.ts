@@ -1190,7 +1190,7 @@ async function handleGetWalletBalances(args: {
   return JSON.stringify(
     {
       status: "success",
-      wallet: args.wallet_address,
+      wallet: ownerAddress,
       total_tokens: items.length,
       tokens_with_balance: nonZero.length,
       balances: nonZero.map((b) => ({
