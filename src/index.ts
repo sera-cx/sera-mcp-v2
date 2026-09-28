@@ -777,11 +777,11 @@ const tools: Tool[] = [
         },
         from_decimals: {
           type: "number",
-          description: "Decimals of source token (default: 18)",
+          description: "Optional. Decimals of the source token. Looked up from the token registry if omitted.",
         },
         to_decimals: {
           type: "number",
-          description: "Decimals of destination token (default: 18)",
+          description: "Optional. Decimals of the destination token. Looked up from the token registry if omitted.",
         },
       },
       required: ["from_token", "to_token"],
@@ -1492,8 +1492,8 @@ async function handleGetExchangeRate(args: {
   from_decimals?: number;
   to_decimals?: number;
 }): Promise<string> {
-  const fromDecimals = args.from_decimals ?? 6;
-  const toDecimals = args.to_decimals ?? 6;
+  const fromDecimals = args.from_decimals ?? (await getTokenDecimals(args.from_token));
+  const toDecimals = args.to_decimals ?? (await getTokenDecimals(args.to_token));
   
   // Try progressively larger amounts to meet minimum trade requirements
   const amountsToTry = [
